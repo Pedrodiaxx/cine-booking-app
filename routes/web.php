@@ -22,8 +22,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->get('/dashboard', function () {
 
-    $user = Auth::user();   // ✔ Intelephense lo reconoce
-
+    $user = auth()->user();
 
     if ($user->hasRole('admin')) {
         return redirect()->route('admin.dashboard');
@@ -37,6 +36,7 @@ Route::middleware(['auth'])->get('/dashboard', function () {
 
 })->name('dashboard');
 
+
 /*
 |--------------------------------------------------------------------------
 | Área ADMIN
@@ -44,13 +44,22 @@ Route::middleware(['auth'])->get('/dashboard', function () {
 */
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
+    ->name('admin.')
     ->group(function () {
 
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
-        })->name('admin.dashboard');
+        })->name('dashboard');
 
+        // CRUD de películas
+        Route::resource('movies', \App\Http\Controllers\Admin\MovieController::class);
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        Route::resource('rooms', \App\Http\Controllers\Admin\RoomController::class);
+        Route::resource('showtimes', \App\Http\Controllers\Admin\ShowtimeController::class);
+        Route::resource('tickets', App\Http\Controllers\Admin\TicketController::class);
+        Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
     });
+
 
 /*
 |--------------------------------------------------------------------------
