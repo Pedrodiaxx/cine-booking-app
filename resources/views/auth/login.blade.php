@@ -1,48 +1,80 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineBooking – Iniciar Sesión</title>
 
-        <x-validation-errors class="mb-4" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-        @session('status')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
-            </div>
-        @endsession
+<body 
+    style="
+        background-image: url('{{ asset('/img/Fondo-cine.jpg') }}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        min-height: 100vh;
+    "
+    class="flex items-center justify-center"
+>
 
+    <div class="bg-black/70 backdrop-blur-md p-10 rounded-xl shadow-lg w-full max-w-md text-white">
+
+        {{-- Logo --}}
+        <div class="text-center mb-6">
+            <img src="/logo.png" alt="Logo" class="w-16 mx-auto">
+        </div>
+
+        <h1 class="text-2xl font-bold text-center mb-6">
+            CineBooking – Iniciar Sesión
+        </h1>
+
+        {{-- Form --}}
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+            {{-- Email --}}
+            <label class="block text-sm font-semibold">Email</label>
+            <input
+                type="email"
+                name="email"
+                class="w-full mt-1 p-2 rounded-lg bg-white/90 text-black"
+                required autofocus
+            >
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
+            {{-- Password --}}
+            <label class="block text-sm font-semibold mt-4">Password</label>
+            <input
+                type="password"
+                name="password"
+                class="w-full mt-1 p-2 rounded-lg bg-white/90 text-black"
+                required
+            >
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+            {{-- Remember + Create --}}
+            <div class="flex items-center justify-between mt-4 text-sm">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="remember" class="rounded border-gray-300">
+                    Recordarme
                 </label>
+
+                <a href="{{ route('register') }}" class="text-yellow-300 hover:text-yellow-400">
+                    Crear cuenta
+                </a>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
+            {{-- Login button --}}
+            <button
+                type="submit"
+                class="mt-6 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg"
+            >
+                Iniciar Sesión
+            </button>
 
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
         </form>
-    </x-authentication-card>
-</x-guest-layout>
+
+    </div>
+
+</body>
+</html>

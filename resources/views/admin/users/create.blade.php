@@ -1,24 +1,36 @@
 <x-admin-layout>
-    <h1 class="text-xl font-bold mb-4">Crear Usuario</h1>
+    <h1 class="text-2xl font-bold text-yellow-400 mb-6">Crear Usuario</h1>
 
-    <form method="POST" class="space-y-4"
-          action="{{ route('admin.users.store') }}">
+    <form action="{{ route('admin.users.store') }}" method="POST"
+          class="bg-gray-800 p-6 rounded-lg shadow text-white">
         @csrf
 
-        <input name="name" class="w-full border p-2" placeholder="Nombre" required>
+        <div class="mb-4">
+            <label class="block font-bold">Nombre</label>
+            <input type="text" name="name" class="w-full p-2 rounded text-black" required>
+        </div>
 
-        <input name="email" class="w-full border p-2" placeholder="Email" required>
+        <div class="mb-4">
+            <label class="block font-bold">Email</label>
+            <input type="email" name="email" class="w-full p-2 rounded text-black" required>
+        </div>
 
-        <input type="password" name="password" class="w-full border p-2" placeholder="Contraseña" required>
+        <div class="mb-4">
+            <label class="block font-bold">Password</label>
+            <input type="password" name="password" class="w-full p-2 rounded text-black" required>
+        </div>
 
-        <select name="role" class="w-full border p-2" required>
-            @foreach($roles as $r)
-                <option value="{{ $r->name }}">{{ $r->name }}</option>
-            @endforeach
-        </select>
+        <div class="mb-4">
+            <label class="block font-bold">Rol</label>
+            <select name="role" class="w-full p-2 rounded text-black" required>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
+                @endforeach
+            </select>
+        </div>
 
-        <button class="bg-green-600 text-white px-4 py-2 rounded">
-            Crear
+        <button class="px-4 py-2 bg-yellow-500 text-black font-bold rounded hover:bg-yellow-600">
+            Guardar Usuario
         </button>
     </form>
 </x-admin-layout>

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use App\Http\Controllers\Admin\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +60,11 @@ Route::middleware(['auth', 'admin'])
         Route::resource('showtimes', \App\Http\Controllers\Admin\ShowtimeController::class);
         Route::resource('tickets', App\Http\Controllers\Admin\TicketController::class);
         Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+        Route::get('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle');
+
+
     });
 
 
