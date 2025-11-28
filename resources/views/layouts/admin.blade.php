@@ -8,7 +8,7 @@
             <h2 class="text-xl font-bold mb-6">Cinemanía</h2>
 
             <a href="{{ route('admin.dashboard') }}"
-                class="block py-2 px-3 rounded 
+                class="block py-2 px-3 rounded
                 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-700 text-yellow-400' : 'hover:bg-gray-700 hover:text-yellow-300' }}">
                 Dashboard
             </a>
@@ -51,10 +51,17 @@
 
         </aside>
 
-        {{-- CONTENIDO --}}
+        {{-- Contenido dinámico --}}
         <main class="flex-1 p-8 bg-gray-100">
             {{ $slot }}
         </main>
 
     </div>
+
+    {{-- SweetAlert global --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Scripts enviados desde las vistas --}}
+    @stack('scripts')
+
 </x-app-layout>

@@ -53,19 +53,23 @@ Route::middleware(['auth', 'admin'])
             return view('admin.dashboard');
         })->name('dashboard');
 
-        // CRUD de películas
         Route::resource('movies', \App\Http\Controllers\Admin\MovieController::class);
+
+        // activar/desactivar película
+        Route::get('movies/{movie}/toggle', 
+            [\App\Http\Controllers\Admin\MovieController::class, 'toggle']
+        )->name('movies.toggle');
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         Route::resource('rooms', \App\Http\Controllers\Admin\RoomController::class);
         Route::resource('showtimes', \App\Http\Controllers\Admin\ShowtimeController::class);
-        Route::resource('tickets', App\Http\Controllers\Admin\TicketController::class);
-        Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
-
+        Route::resource('tickets', \App\Http\Controllers\Admin\TicketController::class);
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
-        Route::get('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle');
 
-
+        Route::get('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+            ->name('users.toggle');
     });
+
 
 
 /*

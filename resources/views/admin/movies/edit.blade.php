@@ -1,33 +1,49 @@
 <x-admin-layout>
-    <h1 class="text-xl font-bold mb-4">Editar Película</h1>
 
-    <form method="POST" enctype="multipart/form-data"
-          action="{{ route('admin.movies.update', $movie) }}"
-          class="space-y-4">
+    <h1 class="text-2xl font-bold text-yellow-400 mb-6"> Editar Película</h1>
 
+    <form method="POST" action="{{ route('admin.movies.update', $movie) }}">
         @csrf
         @method('PUT')
 
-        <input name="title" class="w-full border p-2"
-               value="{{ $movie->title }}" required>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <input name="genre" class="w-full border p-2"
-               value="{{ $movie->genre }}" required>
+            <div>
+                <label class="block font-semibold">Título</label>
+                <input name="title" value="{{ $movie->title }}"
+                       class="w-full p-2 rounded bg-gray-700 text-white">
+            </div>
 
-        <input name="duration" type="number" class="w-full border p-2"
-               value="{{ $movie->duration }}" required>
+            <div>
+                <label class="block font-semibold">Duración (minutos)</label>
+                <input type="number" name="duration" value="{{ $movie->duration }}"
+                       class="w-full p-2 rounded bg-gray-700 text-white">
+            </div>
 
-        <textarea name="description" class="w-full border p-2">
-            {{ $movie->description }}
-        </textarea>
+            <div>
+                <label class="block font-semibold">Género</label>
+                <input name="genre" value="{{ $movie->genre }}"
+                       class="w-full p-2 rounded bg-gray-700 text-white">
+            </div>
 
-        <input name="poster" type="file" class="w-full border p-2">
+            <div>
+                <label class="block font-semibold">Clasificación</label>
+                <input name="rating" value="{{ $movie->rating }}"
+                       class="w-full p-2 rounded bg-gray-700 text-white">
+            </div>
 
-        <input name="release_date" type="date" class="w-full border p-2"
-               value="{{ $movie->release_date }}">
+            <div class="md:col-span-2">
+                <label class="block font-semibold">URL del Poster</label>
+                <input name="poster" value="{{ $movie->poster }}"
+                       class="w-full p-2 rounded bg-gray-700 text-white">
+            </div>
 
-        <button class="bg-yellow-600 text-white px-4 py-2 rounded">
+        </div>
+
+        <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
             Actualizar
         </button>
+
     </form>
+
 </x-admin-layout>

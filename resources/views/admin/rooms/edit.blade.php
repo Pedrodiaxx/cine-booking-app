@@ -1,25 +1,42 @@
 <x-admin-layout>
-    <h1 class="text-2xl font-bold mb-4">Editar Sala</h1>
 
-    <form action="{{ route('admin.rooms.update', $room) }}" method="POST" class="space-y-4">
+    <h1 class="text-2xl font-bold text-yellow-400 mb-6">Editar Sala</h1>
+
+    <form action="{{ route('admin.rooms.update', $room) }}" method="POST"
+          class="bg-gray-800 text-white p-6 rounded-lg shadow w-full max-w-2xl">
         @csrf
         @method('PUT')
 
-        <div>
-            <label>Nombre</label>
-            <input type="text" name="name" value="{{ $room->name }}" class="w-full border p-2">
+        {{-- Nombre --}}
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Nombre</label>
+            <input type="text" name="name" class="w-full p-2 rounded bg-gray-700 border-gray-600"
+                   value="{{ old('name', $room->name) }}" required>
+            @error('name') <p class="text-red-400 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <div>
-            <label>Filas</label>
-            <input type="number" name="rows" value="{{ $room->rows }}" class="w-full border p-2">
+        {{-- Filas --}}
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Filas</label>
+            <input type="number" name="rows" class="w-full p-2 rounded bg-gray-700 border-gray-600"
+                   min="1" value="{{ old('rows', $room->rows) }}" required>
+            @error('rows') <p class="text-red-400 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <div>
-            <label>Asientos por fila</label>
-            <input type="number" name="seats_per_row" value="{{ $room->seats_per_row }}" class="w-full border p-2">
+        {{-- Asientos por fila --}}
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Asientos por fila</label>
+            <input type="number" name="seats_per_row" class="w-full p-2 rounded bg-gray-700 border-gray-600"
+                   min="1" value="{{ old('seats_per_row', $room->seats_per_row) }}" required>
+            @error('seats_per_row') <p class="text-red-400 text-sm">{{ $message }}</p> @enderror
         </div>
 
-        <button class="px-4 py-2 bg-blue-600 text-white rounded">Actualizar</button>
+        <div class="flex mt-6 gap-4">
+            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Actualizar</button>
+            <a href="{{ route('admin.rooms.index') }}"
+               class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-white">Cancelar</a>
+        </div>
+
     </form>
+
 </x-admin-layout>

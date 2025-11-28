@@ -10,7 +10,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::paginate(10);
+        $roles = Role::all(); 
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -27,8 +27,13 @@ class RoleController extends Controller
 
         Role::create(['name' => $request->name]);
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol creado correctamente.');
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Rol creado correctamente',
+            'text'  => 'El rol ha sido creado exitosamente'
+        ]);
+
+        return redirect()->route('admin.roles.index');
     }
 
     public function edit(Role $role)
@@ -39,20 +44,39 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => "required|unique:roles,name,{$role->id}"
+            'name' => 'required|unique:roles,name,' . $role->id,
         ]);
+
+        if ($role->name === $request->name) {
+            session()->flash('swal', [
+                'icon'  => 'info',
+                'title' => 'Sin cambios',
+                'text'  => 'No se detectaron modificaciones'
+            ]);
+
+            return redirect()->route('admin.roles.edit', $role);
+        }
 
         $role->update(['name' => $request->name]);
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol actualizado correctamente.');
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Rol actualizado',
+            'text'  => 'El rol ha sido actualizado correctamente'
+        ]);
+
+        return redirect()->route('admin.roles.index');
     }
 
     public function destroy(Role $role)
-    {
-        $role->delete();
+{
+    session()->flash('swal', [
+        'icon'  => 'error',
+        'title' => 'No se puede eliminar este rol',
+        'text'  => 'Los roles base del sistema no pueden eliminarse.'
+    ]);
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Rol eliminado.');
-    }
+    return redirect()->route('admin.roles.index');
+}
+
 }

@@ -73,4 +73,18 @@ class MovieController extends Controller
         return redirect()->route('admin.movies.index')
             ->with('success', 'Película eliminada.');
     }
+
+    public function toggle(Movie $movie)
+{
+    $movie->active = !$movie->active;
+    $movie->save();
+
+    return redirect()
+        ->route('admin.movies.index')
+        ->with('success', $movie->active
+            ? 'Película activada'
+            : 'Película desactivada'
+        );
+}
+
 }

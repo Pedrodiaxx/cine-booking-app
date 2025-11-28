@@ -12,4 +12,8 @@ class Room extends Model
         'seats_per_row',
         'active',
     ];
+
+    protected $casts = [
+        'active' => 'boolean',
+    ];
 }
