@@ -1,6 +1,6 @@
 <x-admin-layout>
     <div class="max-w-3xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">🎟 Crear nuevo boleto</h1>
+        <h1 class="text-2xl font-bold mb-6"> Crear nuevo boleto</h1>
 
         @if ($errors->any())
             <div class="mb-4 bg-red-100 text-red-700 p-3 rounded">

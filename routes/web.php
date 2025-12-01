@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use App\Http\Controllers\Admin\UserController;
 
+// IMPORTAR CONTROLADORES DEL CLIENTE
+use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
+use App\Http\Controllers\Client\FunctionController as ClientFunctionController;
+use App\Http\Controllers\Client\TicketController as ClientTicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +72,9 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
             ->name('users.toggle');
+
+        Route::get('showtimes/{showtime}/toggle',[App\Http\Controllers\Admin\ShowtimeController::class, 'toggle'])
+            ->name('showtimes.toggle');
     });
 
 
@@ -92,12 +99,26 @@ Route::middleware(['auth', 'staff'])
 | Área CLIENT
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'client'])
+Route::middleware(['auth', 'verified'])
     ->prefix('client')
+    ->name('client.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('client.dashboard');
-        })->name('client.dashboard');
+        // Dashboard
+        Route::get('/dashboard', [ClientDashboardController::class, 'index'])
+            ->name('dashboard');
 
+        // Funciones disponibles
+        Route::get('/functions', [ClientFunctionController::class, 'index'])
+            ->name('functions.index');
+
+        Route::get('/functions/{showtime}', [ClientFunctionController::class, 'show'])
+            ->name('functions.show');
+
+        // Tickets
+        Route::get('/tickets', [ClientTicketController::class, 'index'])
+            ->name('tickets.index');
+
+        Route::post('/tickets/{showtime}', [ClientTicketController::class, 'store'])
+            ->name('tickets.store');
     });

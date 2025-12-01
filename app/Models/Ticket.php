@@ -3,30 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Movie;
-use App\Models\Room;
 
 class Ticket extends Model
 {
     protected $fillable = [
-        'code',
-        'movie_id',
-        'room_id',
-        'show_time',
-        'price',
-        'seat'
+        'user_id',
+        'showtime_id',
+        'seat_row',
+        'seat_number',
+        'price'
     ];
 
-    public function movie()
+    public function user()
     {
-        return $this->belongsTo(Movie::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function room()
+    public function showtime()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Showtime::class);
     }
 }
-
-
-

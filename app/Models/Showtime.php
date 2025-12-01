@@ -7,21 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class Showtime extends Model
 {
     protected $fillable = [
-        'movie_id',
         'room_id',
+        'movie_id',
         'date',
-        'start_time',
-        'available_seats',
+        'time',
         'active',
     ];
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 
     public function movie()
     {
         return $this->belongsTo(Movie::class);
     }
 
-    public function room()
+    public function tickets()
     {
-        return $this->belongsTo(Room::class);
+        return $this->hasMany(Ticket::class);
     }
 }
+

@@ -1,49 +1,80 @@
 <x-admin-layout>
-    <h1 class="text-2xl font-bold mb-4">🎟 Lista de Boletos</h1>
 
-    <a href="{{ route('admin.tickets.create') }}"
-       class="bg-blue-600 text-white px-4 py-2 rounded mb-4 inline-block">
-        ➕ Nuevo Boleto
-    </a>
+    <h1 class="text-2xl font-bold mb-4"> Lista de Boletos</h1>
 
-    <table class="w-full bg-white shadow rounded">
-        <thead class="bg-gray-200">
-            <tr>
-                <th class="p-2">Código</th>
-                <th class="p-2">Película</th>
-                <th class="p-2">Sala</th>
-                <th class="p-2">Horario</th>
-                <th class="p-2">Asiento</th>
-                <th class="p-2">Precio</th>
-                <th class="p-2">Acciones</th>
+    <table class="w-full mt-4 bg-white shadow rounded">
+        <thead>
+            <tr class="bg-gray-100 text-left text-sm">
+                <th class="p-3">Código</th>
+                <th class="p-3">Película</th>
+                <th class="p-3">Sala</th>
+                <th class="p-3">Horario</th>
+                <th class="p-3">Asiento</th>
+                <th class="p-3">Precio</th>
+                <th class="p-3">Usuario</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach ($tickets as $ticket)
-                <tr class="border-b">
-                    <td class="p-2">{{ $ticket->code }}</td>
-                    <td class="p-2">{{ $ticket->movie->title }}</td>
-                    <td class="p-2">{{ $ticket->room->name }}</td>
-                    <td class="p-2">{{ $ticket->show_time }}</td>
-                    <td class="p-2">{{ $ticket->seat }}</td>
-                    <td class="p-2">$ {{ $ticket->price }}</td>
-                    <td class="p-2 flex gap-2">
+            @forelse ($tickets as $ticket)
+                <tr class="border-b text-sm">
 
-                        <a href="{{ route('tickets.edit', $ticket) }}"
-                           class="text-blue-600">Editar</a>
+                    {{-- Código --}}
+                    <td class="p-3">TCK-{{ $ticket->id }}</td>
 
-                        <form action="{{ route('tickets.destroy', $ticket) }}"
-                              method="POST">
-                            @csrf @method('DELETE')
-                            <button class="text-red-600"
-                                    onclick="return confirm('¿Eliminar boleto?')">
-                                Eliminar
-                            </button>
-                        </form>
+                    {{-- Película --}}
+                    <td class="p-3">
+                        @if($ticket->showtime && !$ticket->showtime->cancelled)
+                            {{ $ticket->showtime->movie->title }}
+                        @elseif($ticket->showtime && $ticket->showtime->cancelled)
+                            <span class="text-red-600 font-bold">Función cancelada</span>
+                        @else
+                            <span class="text-gray-500">No disponible</span>
+                        @endif
+                    </td>
 
+
+                    {{-- Sala --}}
+                    <td class="p-3">
+                        {{ $ticket->showtime->room->name ?? 'N/A' }}
+                    </td>
+
+                    {{-- Fecha y hora --}}
+                    <td class="p-3">
+                        @if ($ticket->showtime)
+                            {{ $ticket->showtime->date }} — {{ $ticket->showtime->time }}
+                        @else
+                            N/A
+                        @endif
+                    </td>
+
+                    {{-- Asiento --}}
+                    <td class="p-3">
+                        {{ $ticket->seat_row }}{{ $ticket->seat_number }}
+                    </td>
+
+                    {{-- Precio --}}
+                    <td class="p-3">${{ number_format($ticket->price, 2) }}</td>
+
+                    {{-- Usuario --}}
+                    <td class="p-3">
+                        {{ $ticket->user->name ?? 'Usuario eliminado' }}
+                    </td>
+
+                </tr>
+
+            @empty
+                <tr>
+                    <td colspan="7" class="text-center p-4 text-gray-500">
+                        No hay boletos registrados aún.
                     </td>
                 </tr>
-            @endforeach
+            @endforelse
         </tbody>
     </table>
+
+    <div class="mt-4">
+        {{ $tickets->links() }}
+    </div>
+
 </x-admin-layout>
